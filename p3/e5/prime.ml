@@ -16,6 +16,10 @@ if(n>1) then
 last_prime_to(n-1))
 else -1;; (*No puede ser mayor que 1*)
 
-let is_prime n =
+let is_prime2 n =
+let rec check_from i =
+i >= n || sqrt(float_of_int(n))>float_of_int(i) && n mod i != 0 ||
+(n mod i <> 0 && check_from (i+1))
+in check_from 2;;
 	
 
