@@ -16,20 +16,6 @@ let rec reverse n = (*n>=0*)
 	if n >= 10 then (exp10((num_cifras n) - 1))*(n mod 10) + reverse (n/10) else (n mod 10);; 
 
 (*5-*)
-(*let palindromo s = 
-	let rec check_from i =
-	if i < (String.length s)-1-i then
-	if s.[i] != s.[(String.length s)-1-i] then false
-	else check_from(i+1) else true
-	in check_from 0;;*)
-
-let palindromo s = 
-	let rec check_from i j =
-	if i < j then
-	if s.[i] <> s.[j] then false
-	else check_from (i+1) (j-1) else true
-	in check_from 0 (String.length s - 1);;
-
 let palindromo s = 
 	let rec check_from i j =
 	i >= j || (s.[i] = s.[j] && check_from(i+1)(j-1)) 
