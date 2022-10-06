@@ -4,8 +4,8 @@
 
 (*2-*)
 let rec num_cifras n = (*n>=0*)
-	if n>0 then 1 + num_cifras(n/10)
-	else 0;; 
+		if n>=10 then 1 + num_cifras(n/10)
+		else 1;; 
 
 (*3-*)
 let rec exp10 n = (*n>=0*)
