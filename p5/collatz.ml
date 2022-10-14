@@ -21,12 +21,18 @@ let rec length'n'top n =
 	else let i,j = length'n'top(f n)
 	in (i+1, max n j);;
 
-let rec longest_in m n =
-	if m = n then m, length m
-	else
-	if m > n then longest_in n m
-	else let rec check_from i = 
-		if max (length m) (length i) > length m then longest_in i n
-		else check_from (i+1)
-	in check_from m;;
+let rec longest_in m n=
+	let rec check_from i=
+			if i <= m then m, length m
+			else let j,length_j= check_from (i-1) in
+			let length_i = length i in
+			if length_j >= length_i then j,length_j else i,length_i
+	in check_from n;;
 
+	let rec highest_in m n=
+	let rec check_from i=
+			if i <= m then m, top m
+			else let j,top_j= check_from (i-1) in
+			let top_i = top i in
+			if top_j >= top_i then j,top_j else i,top_i
+	in check_from n;;
