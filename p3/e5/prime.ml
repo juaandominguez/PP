@@ -8,13 +8,13 @@ let rec next_prime n =
 if(n>1) then	
 (if(is_prime(n+1)) then (n+1) else
 next_prime(n+1))
-else -1;; (*No puede ser mayor que 1*)
+else -1;; (*No puede ser mayor o igual que 1*)
 
 let rec last_prime_to n =
 if(n>1) then	
 (if(is_prime(n-1)) then (n-1) else
 last_prime_to(n-1))
-else -1;; (*No puede ser mayor que 1*)
+else -1;; (*No puede ser mayor o igual que 1*)
 
 let is_prime2 n =
 let rec check_from i =
