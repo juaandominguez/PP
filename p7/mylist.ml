@@ -55,9 +55,10 @@ let rec find_all f l = match l with
   [] -> []
 | h::t -> if f h then h::(find_all f t) else (find_all f t);; 
 
-let partition f l = (*Cambiar*)
-  let negated f x = not (f x) in
-  find_all f l, find_all (negated f) l;;
+let rec partition f l = match l with
+    [] -> [],[]
+  | h::t -> let (a,b) = partition f t in
+  if f h then (h::a,b) else (a,h::b);;
 
   let split l = (*not valid**)
   let rec aux i j l = match l with
@@ -66,8 +67,12 @@ let partition f l = (*Cambiar*)
   in aux [] [] (List.rev l);; 
 
   let split l = match l with
+      let rec aux i j =
   [] -> [],[]
-  |[x,y]::_ -> x,y
+  |[x,y]::[] -> x,y
+  | [x,y]::t -> (x,y)::split t;;
+
+  
 
   let split_rev l = 
     let rec aux i j l = match l with
@@ -94,11 +99,9 @@ let init len f =
       else []
     in aux 0;;
 
-let rev_append l1 l2 = 
-  let rec aux i l1 = match l1 with
-    | [] -> i@l2
-    | h::t -> aux(h::i) t
-  in aux [] l1;;
+    let rec rev_append l1 l2 = match l1 with
+    | [] -> l2
+    | h::t -> rev_append t (h::l2);;    
 
 let rec concat l = match l with
       [] -> []
@@ -123,15 +126,16 @@ let rec map2 f l1 l2 = match l1,l2 with
 | [],_ | _,[] -> raise(Invalid_argument"map2")
 | h1::t1,h2::t2 -> f h1 h2 :: map2 f t1 t2;;
 
-let fold_left f a l = 
+let rec fold_left f a = function
+| [] -> a
+| h::t -> fold_left f (f a h) t;;  
 
+let rec fold_right f l a = match l with
+| [] -> a; 
+| h::t -> fold_right f t (f a h);;  
 
-
-
-let fold_right
-
-
-
+let rec rev l = rev_append l [];;
+let append l1 l2 = rev_append (rev l1) l2;;
 
 
 

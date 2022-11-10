@@ -183,11 +183,76 @@ let rec lmax = function
 							| h::t -> aux (max m h) t
 							in aux h t;
 
-let rec lmax = (function
+let rec lmax = function
 | [] -> raise(Failure("lmax"))
 | h::[] -> h
 | h1::h2::t -> lmax (max h1 h2 :: t);;
 
+let rec for_all f = function
+| [] -> true;
+| h::t -> f h && for_all f t;;
+
+let for_all p l = List.fold_left (fun b h -> b && p h ) true l;; (*Mejor la primera*)
+
+let rec sorted = function
+| [] | _::[]-> true;
+| h1::h2::t -> h1<=h2 && sorted (h2::t);;
+
+let rec insert x = function
+[] -> [x]
+| h::t -> if x<= h then x::h::t else h::insert x t;;
+
+let rec isort = (function
+| [] -> [];
+| h::t -> insert h (isort t)
+
+let insert' x l=
+let rec aux p1= function
+[]-> List.rev (x::p1)
+|h::t -> if x <= h then List.rev_append p1 (x::h::t)
+else aux (h::p1) t
+in aux [] l;;
+
+let isort' l =
+		let rec aux res = function
+		| [] -> res
+		| h::t -> aux(insert' h ord) t
+	in aux [] l;;
+
+let rec divide = function
+| h1::h2::t -> let t1,t2 = divide t in h1::t1,h2::t2
+| l -> l,[];;
+
+let rec merge = function
+| ([],l) | (l,[]) -> l
+| (h1::t1, h2::t2) ->  if h1<= h2 then h1 :: merge (t1, h2::t2)
+else h2 :: (merge h1::t1, t2);;
+
+let rec msort = (function
+| [] -> []
+| [x] -> [x]
+| l -> let l1,l2 = divide l in merge (msort l1, msort l2))
+
+	let threatens (i1,j1) (i2,j2) = 
+			i1 = i2 || 
+			j1 = j2 ||
+			abs(j2-j1) = abs(i2-i1);;
+			
+	(* let rec compatible p = function
+	[] -> true;
+	| h::t -> not(threatens p h) && compatible p t;; *)
+
+	let compatible p l = not (List.exists (threatens p l) s);; 
+
+	let rec queens n =
+		let rec complete path (i,j) =
+			if i>n then Some path
+			else if j>n then None
+			else if compatible(i,j) path then match complete((i,j)::path) (i+1,1) with
+				None -> complete path(i,j+1)
+				| sol -> sol
+			else complete path (i,j+1)
+		in queens [] (1,1);;
 
 
 
