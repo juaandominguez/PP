@@ -22,7 +22,8 @@ let rec aux i = function
 in aux [],(l1,l2);;
 
 let lprod l1 l2 =
-  List.map( function x -> List.map(function y ->(x,y)) l2) l1;;
+
+  List.flatten(List.map( function x -> List.map(function y ->(x,y)) l2) l1);;
 
 
 

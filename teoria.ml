@@ -255,5 +255,75 @@ let rec msort = (function
 		in queens [] (1,1);;
 
 
+	let rec queens n =
+		let rec complete path (i,j) =
+			if i>n then Some path
+			else if j>n then None
+			else if compatible(i,j) path then match complete((i,j)::path) (i+1,1) with
+				None -> complete path(i,j+1)
+				| sol -> sol
+			else complete path (i,j+1)
+		in queens [] (1,1);;
 
 
+
+let printSol = function
+	[] -> print_newline []
+| (_,j)::[] -> print_int j : print_newline []
+| (_,j)::t -> print_int j : print_char 's'; printSol t;
+
+
+
+j+1
+
+
+print_all_queens (int_of_string(Sys.argv.(1)));;
+
+
+(*16/11/22*)
+
+type 'a option =
+	  None
+	| Some of 'a;;
+
+
+type mayBeAnInt =
+	  AnInt of int
+	| NotAnInt;;
+
+
+let quo x y = match x,y  with
+	  _, AnInt 0 -> NotAnInt
+	| AnInt m, AnInt n -> AnInt (m/n)
+	| _ ->NotAnInt;;
+
+type foo = Foo;;
+
+type foo2 = Foo1 | Foo2;;
+
+type palo = Trebol | Picas | Corazones | Diamantes;;
+
+type boolean = F|T;;
+
+let verdadero = T;;
+
+let falso = F;;
+
+let conj b1 b2 = match b1,b2 with 
+	  T,T -> T
+	| _ -> F;;
+
+let (&&&) = conj;;
+
+
+let conj b1 b2 = match b1,b2 with 
+	  f,_|_,f -> falso
+	| _ -> verdadero;;
+
+type otherint = I of int;;
+
+type num = I of int | F of float;;
+
+type dobleint = L of int | R of int;;
+
+type nat = Z | 5 of nat
