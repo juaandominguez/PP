@@ -326,4 +326,51 @@ type num = I of int | F of float;;
 
 type dobleint = L of int | R of int;;
 
-type nat = Z | 5 of nat
+type nat = Z | S of nat;;
+
+let uno = S Z;;
+
+let dos = S UNO;;
+
+let rec sum n1 = function
+	  Z -> n1
+	| S n2 -> sum (S n1) n2;;
+
+let rec nat_of_int = function
+	  0 -> Z
+	| n -> S nat_of_int (n-1);;
+
+
+type 'a btree =
+	E | N of 'a * 'a btree * 'a btree;;
+
+type 'a list =
+	  [] 
+	| (::) of 'a * 'a list;;
+
+let h x = N (x,E,E);; (*E representa el árbol vacío*)
+
+let left_branch ((N,_,_)) = l;;
+
+let rec nnodes = function
+	  E -> 0 
+	| N(_,i,d) -> 1+ nnodes i + nnodes d;;
+
+
+let rec height = function
+	| E -> 0
+	| N(_,i,d) -> 1 + max (height i) (height d);;
+
+let rec inorder = function
+	| E -> []
+	| N(r,lb,rb) -> inorder lb @ [r] @ inorder rb;; 
+
+
+let rec leaves = 
+	| E -> []
+	| N (r,E,E) -> [r]
+	| N (_,lb,rb) -> leaves lb @ leaves rb;;
+
+type 'a st_tree =
+	  Leaf of 'a
+	| Node of 'a * 'a st_tree * 'a st_tree;;

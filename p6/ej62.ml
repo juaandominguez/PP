@@ -18,7 +18,7 @@ h 1, h 2, h 3;;
 (*- : int * int * int = (7, 10, 13)*)
 let comp f g x =
   f (g x);;
-
+(*val comp : ('a -> 'b) -> ('c -> 'a) -> 'c -> 'b = <fun>*)
 let f = let square x = x * x in comp square ((+) 1);;
 (*val f : int -> int = <fun>*)
 f 1, f 2, f 3;;

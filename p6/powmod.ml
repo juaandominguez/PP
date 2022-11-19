@@ -5,8 +5,6 @@ let rec power' x y = (*y>=0*)
 
 (*let powmod m b e = power' b e mod m;;*)
 
-
-
 let rec powmod m b e = 
         if e=0 then 1 mod m
         else
