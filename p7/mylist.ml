@@ -1,10 +1,10 @@
 let hd l = match l with
   [] -> raise(Failure("hd"));
-| h::t -> h;;
+| h::_ -> h;;
 
 let tl l = match l with
   [] -> raise(Failure("tl"));
-| h::t -> t;;
+| _::t -> t;;
 
 let length l = 
     let rec aux i l = match l with
@@ -12,27 +12,19 @@ let length l =
 | h::t -> aux(i+1) t
 in aux 0 l;;
 
-let compare_lengths l1 l2 = match l1,l2 with
-| [],[] -> 0
+let rec compare_lengths l1 l2 = match l1,l2 with
+  [],[] -> 0
 | [],_ -> -1
 | _,[] -> 1
-| _,_ -> if length l1 > length l2 then 1 else if length l1 < length l2 then -1
-else 0;;
+| _::t1, _::t2 -> compare_lengths t1 t2;;
 
-let nth l n = 
-if n<0 then raise(Failure("Invalid_argument"))
-else if n>length l then raise(Failure("List is too short")) else
-let rec aux l n = 
-  if n=0 then (hd l)
-  else aux (tl l) (n-1)
-in aux l n;;
-
-let rec append l1 l2 = match l1 with
-| [] -> l2
-| h::t -> h::append l2 t;; 
+let rec nth l x= 
+if x<0 then raise(Invalid_argument"nth")
+else if x=0 then if l = [] then raise(Failure"nth") else hd(l)
+else nth (tl l) (x-1);;
 
 let rec find f l = match l with
-  [] -> raise(Failure("Not_found"))
+  [] -> raise(Not_found)
 | h::t -> if f h then h else find f t;;
 
 let rec for_all f l = match l with
@@ -47,69 +39,61 @@ let rec mem a l = match l with
   [] -> false
 | h::t -> if h = a then true else mem a t;; 
 
-let rec filter f l = match l with
-  [] -> []
-| h::t -> if f h then h::(filter f t) else (filter f t);;
+let rec rev_append l1 l2 = match l1 with
+    | [] -> l2
+    | h::t -> rev_append t (h::l2);;  
+    
+let rec rev l = rev_append l [];;
 
-let rec find_all f l = match l with
-  [] -> []
-| h::t -> if f h then h::(find_all f t) else (find_all f t);; 
+let append l1 l2 = rev_append (rev l1) l2;;
 
-let rec partition f l = match l with
-    [] -> [],[]
-  | h::t -> let (a,b) = partition f t in
-  if f h then (h::a,b) else (a,h::b);;
+let rec filter f l =
+  let rec aux i f l = match l with
+  [] -> i
+| h::t -> if f h then aux (h::i) f t else aux i f t
+in aux [] f (rev l);;
 
-  let split l = (*not valid**)
+(* let find_all f l = 
+let rec aux i f l = match l with
+| [] -> i
+| h::t -> if f h then aux(h::i) f t else aux i f t
+  in aux [] f (rev l);; *)
+
+let find_all = filter;;
+
+let partition f l =
+  let rec aux i j = function
+    [] -> (rev i, rev j)
+  | h::t -> if (f h) then aux (h::i) j t else aux i (h::j) t
+  in aux [] [] l;;
+
+let split l =
   let rec aux i j l = match l with
-  [] -> i,j
-  | h::t -> aux ((fst h)::i) ((snd h)::j) t
-  in aux [] [] (List.rev l);; 
-
-  let split l = match l with
-      let rec aux i j =
-  [] -> [],[]
-  |[x,y]::[] -> x,y
-  | [x,y]::t -> (x,y)::split t;;
-
-  
-
-  let split_rev l = 
-    let rec aux i j l = match l with
     [] -> i,j
   | h::t -> aux ((fst h)::i) ((snd h)::j) t
-    in aux [] [] l;; 
+  in aux [] [] (rev l);; 
 
-    let rev l= 
-    let rec aux i l = match l with
-    |[]->i 
-    |h::t -> aux(h::i) t
-   in aux [] l;;
-
-      let rec combine l1 l2 =
-        match l1,l2 with
-        | [],[] -> []
-        | [],_ | _,[] -> raise(Invalid_argument"Different lengths")
-        | h1::t1,h2::t2 -> (h1,h2)::(combine t1 t2);;
+let rec combine l1 l2 = match l1,l2 with
+  | [],[] -> []
+  | [],_ | _,[] -> raise(Invalid_argument"combine")
+  | h1::t1,h2::t2 -> (h1,h2)::(combine t1 t2);;
 
 let init len f =
-  if len < 0 then raise(Invalid_argument"Invalid length")
-  else let rec aux i =
-      if i<len then f i::(aux (i+1))
-      else []
-    in aux 0;;
-
-    let rec rev_append l1 l2 = match l1 with
-    | [] -> l2
-    | h::t -> rev_append t (h::l2);;    
+  if len < 0 then raise(Invalid_argument"init")
+  else let rec aux i l=
+      if i=len then rev l 
+      else aux (i+1) (f i::l)
+    in aux 0 [];;
 
 let rec concat l = match l with
-      [] -> []
-    | h::t -> h@concat t;;
+    [] -> []
+  | h::t -> append h (concat t);;
 
-let rec flatten l = match l with
-  [] -> []
-  | h::t -> h@flatten t;;
+(* let rec flatten l = match l with
+    [] -> []
+  | h::t -> append h (flatten t);; *)
+
+ let flatten = concat;;
 
 let rec map f l = match l with
 | [] -> []
@@ -130,12 +114,12 @@ let rec fold_left f a = function
 | [] -> a
 | h::t -> fold_left f (f a h) t;;  
 
-let rec fold_right f l a = match l with
-| [] -> a; 
-| h::t -> fold_right f t (f a h);;  
+let rec fold_right f l a =match l with
+| [] -> a
+| h::t -> f h (fold_right f t a);;
 
-let rec rev l = rev_append l [];;
-let append l1 l2 = rev_append (rev l1) l2;;
+
+
 
 
 

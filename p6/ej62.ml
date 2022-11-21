@@ -27,5 +27,6 @@ let i a = a;;
 let j (a,b) = a;;
 let k (a,b) = b;;
 let l a = a::[];;
-(*Se puede escribir una única función ya que a pesar de
-cambiar 'a' o 'b' seguirá siendo la misma función*)
+(*Existe una única solucion para las 3 primeras, mientras que 
+para la última hay infinitas soluciones, ya que se puede crear
+una lista de infinitos elementos*)

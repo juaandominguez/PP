@@ -15,13 +15,6 @@ let rec ldif l1 l2 = match l1,l2 with
 | _,h::t -> ldif (remove_all h l1) t;;
 
 let lprod l1 l2 =
-let rec aux i = function
-  [],_ -> List.rev i
-| _::t1,[] -> aux i (t1,l2)
-| h1::t1,h2::t2 -> aux ((h1,h2)::i) (h1::t1) t2
-in aux [],(l1,l2);;
-
-let lprod l1 l2 =
 
   List.flatten(List.map( function x -> List.map(function y ->(x,y)) l2) l1);;
 
