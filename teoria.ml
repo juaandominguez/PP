@@ -121,7 +121,7 @@ let compare_lengths l1 l2 =
 	compare (List.length l1)(List.length l2);;
 
 let rec compare_lengths l1 l2 = match l1,l2 with
-  [],[] -> 0
+	[],[] -> 0
 | [],_ -> -1
 | _,[] -> 1
 | _::t1, _::t2 -> compare_lengths t1 t2;;
@@ -283,17 +283,17 @@ print_all_queens (int_of_string(Sys.argv.(1)));;
 (*16/11/22*)
 
 type 'a option =
-	  None
+		None
 	| Some of 'a;;
 
 
 type mayBeAnInt =
-	  AnInt of int
+		AnInt of int
 	| NotAnInt;;
 
 
 let quo x y = match x,y  with
-	  _, AnInt 0 -> NotAnInt
+		_, AnInt 0 -> NotAnInt
 	| AnInt m, AnInt n -> AnInt (m/n)
 	| _ ->NotAnInt;;
 
@@ -310,14 +310,14 @@ let verdadero = T;;
 let falso = F;;
 
 let conj b1 b2 = match b1,b2 with 
-	  T,T -> T
+		T,T -> T
 	| _ -> F;;
 
 let (&&&) = conj;;
 
 
 let conj b1 b2 = match b1,b2 with 
-	  f,_|_,f -> falso
+		f,_|_,f -> falso
 	| _ -> verdadero;;
 
 type otherint = I of int;;
@@ -333,11 +333,11 @@ let uno = S Z;;
 let dos = S UNO;;
 
 let rec sum n1 = function
-	  Z -> n1
+		Z -> n1
 	| S n2 -> sum (S n1) n2;;
 
 let rec nat_of_int = function
-	  0 -> Z
+		0 -> Z
 	| n -> S nat_of_int (n-1);;
 
 
@@ -345,7 +345,7 @@ type 'a btree =
 	E | N of 'a * 'a btree * 'a btree;;
 
 type 'a list =
-	  [] 
+		[] 
 	| (::) of 'a * 'a list;;
 
 let h x = N (x,E,E);; (*E representa el árbol vacío*)
@@ -353,7 +353,7 @@ let h x = N (x,E,E);; (*E representa el árbol vacío*)
 let left_branch ((N,_,_)) = l;;
 
 let rec nnodes = function
-	  E -> 0 
+		E -> 0 
 	| N(_,i,d) -> 1+ nnodes i + nnodes d;;
 
 
@@ -371,6 +371,301 @@ let rec leaves =
 	| N (r,E,E) -> [r]
 	| N (_,lb,rb) -> leaves lb @ leaves rb;;
 
-type 'a st_tree =
-	  Leaf of 'a
+type 'a st_tree = (*Full bst*)
+		Leaf of 'a
 	| Node of 'a * 'a st_tree * 'a st_tree;;
+
+let rec mirror = function
+| Leaf x -> Leaf x
+| Node (v,l,r) -> Node (v, mirror r, mirror l);;
+
+let rec btree_of_st_tree = function
+| Leaf x -> N(x,E,E)
+| Node (v,l,r) -> N(v,btree_of_st_tree l, btree_of_st_tree r);;
+
+let rec st_tree_of_btree = function
+| E -> raise (Invalid_argument"st_tree_of_btree");
+| N (x,E,E) -> Leaf x
+| N (x,l,r) -> Node(x,st_tree_of_btree l,  st_tree_of_btree r);;
+
+type 'a gtree =
+GT of 'a * 'a gtree list;
+
+let rec nngtree = function
+| GT(_,h::t) -> List.fold_left (+) 1 (List.map nngtree l) ;;
+
+let rec nngtree (GT,(_,l)) =
+	List.fold_left (+) 1 (List.map nngtree l);;
+
+let rec nngtree = function
+| GT (_,[]) -> 1
+| GT (x,h::t) -> nngtree h + nngtree (GT (x,t));;
+
+let rec mirror (GT, (v,l)) =
+	GT(v,List.rev(List.map mirror l));;
+
+output_char;;
+stdout;;
+output_char stdout 'a';;
+let print_char c = output_char stdout c;;
+let _ = print_char 'x' in print_char 'y';;
+let totrue _ = true;;
+totrue (print_char 'A' ) && totrue (print_char 'B');;
+"a" ^ "b"; 2 * 3;;
+let ignore _ = ();;
+String.get;; = str.[n];;
+let output_string c s = 
+	let n = String.length s in
+	let rec loop i =
+		if i>=n then ()
+		else begin output_char c s.[i]; loop (i+1) end
+	in loop 0;;
+
+let print_string s = output_string stdout s;;
+let print_endline s = 
+	print_string (s ^ "\n");
+	flush stdout;;
+
+stdout;; stderr;;
+open_out;;
+let sal = open_out "Prueba.md";;
+flush sal;;
+close_out sal;;
+input_char;;
+open_in;;
+let read_char () = input_char stdin;;
+read_line;; 
+
+let rec output_string_list out = function
+| [] -> ()
+| h::t -> output_string out (h^"\n"); output_string_list out t;;
+(*output_string_list: out_channel -> string list -> unit *)
+
+let rec input_string_list input =
+	
+	try let x = input_line input in x :: input_string_list input 
+	with End_of_file -> [];;
+
+let rec iter f = function
+| [] -> ()
+| h::t -> f h; iter f t;;
+
+let output_string_list out l = iter (fun s -> output_string out (s ^ "\n")) l;;
+
+pos_in;;
+seek_in;;(*Cambia puntero a posicion indicada*)
+seek_out;;
+output_value;;
+ref;;
+(!);;
+let i = ref 0;;
+!i;;
+(:=);;
+
+let fact n =
+	let p = ref 1 n
+	for i = 1 to n do 
+		p:= !p * i
+	done;
+	!p;;
+
+(*for downTo*)
+let fact n=
+	let f = ref 1 in
+	List.iter (fun i -> f:=(!f*i)) (let i1 = 1 in let i2 = n in List.init (max 0 (i2-i1+1)) ((+)i1));
+	!f;;
+
+(* while <b> do <e> done*)
+let fact n =
+	let p = ref n in
+	let i = ref (n-1) in
+	while !i>1 do p:=((!p)*(!i)); i := ((!i)-1); done;
+	!p;;
+
+let n = ref 0;;
+
+let turno () =
+	 n := !n+1;
+	 !n;;
+
+let turno = 
+	let n = ref 0 in 
+	n:= !n+1;
+	!n;;
+
+let turno = let n = ref 0 in function () -> 
+	n:= !n +1;
+	!n;;
+
+let reset () =
+	n := 0;;
+
+let turno,reset =
+  let n = ref 0 in 
+	(function ()-> n:=!n+1;!n),
+	(function ()-> n:=0);;
+
+module Counter : 
+sig
+	val turno: unit -> int
+	val reset: unit -> unit
+end =
+struct
+	let n = ref 0
+	let turno () =
+	 n := !n+1;
+	 !n
+	let reset () = 
+	n:=0
+end;;
+
+module C = Counter;;
+C.turno ();;
+
+module Counter (): 
+sig
+	val turno: unit -> int
+	val reset: unit -> unit
+end =
+struct
+	let n = ref 0
+	let turno () =
+	 n := !n+1;
+	 !n
+	let reset () = 
+	n:=0
+end;;
+
+module C1 = Counter ();;
+
+Set
+
+module IntPair =
+struct
+		type t = int * int 
+		let compare = Stdlib.compare
+end;;
+
+module IPSet = Set.Make (IntPair);;
+
+let trees = List.init 50_000 (fun _ -> 1+Random.int(500),Random.int(500)+1);;
+
+let trees_Set = IPSet.of_list trees;;
+
+let to_find = List.init 5_000 (fun _ -> 1+Random.int(500),Random.int(500)+1);;
+
+let r1 = List.filter (fun p -> List.mem p trees) to_find;;
+
+let r2 = List.filter (fun p -> IPSet.mem p trees_Set) to_find;;
+
+let crono f x =
+	let t = Sys.time () in
+		x; Sys.time () -. t;;
+
+let v = [|1;2;3|];;
+
+Array.get v 0;;
+
+Array.set v 0 100;;
+
+Sys.argv;;
+
+v.(0);; (*100*)
+
+Array.make 100 0;;
+
+Array.init 100 (fun x -> x);;
+
+let sProd v1 v2 = 
+	if Array.length v1 <> Array.length v2 then raise(Invalid_argument("sProd"))
+	else begin
+	let p = ref 0.0 in
+	for i = 0 to Array.length v1 do
+			p:= !p +. v1.(i) *. v2.(i)
+	done;
+	!p
+end;;
+
+let sProd v1 v2 =
+		Array.fold_left ( *. ) 0. (Array.map2 ( *. ) v1 v2);;
+
+type persona ={nombre: string; edad: int};;
+let thGol = {nombre = "Thgol"; edad = 95};;
+
+let mas_viejo p =
+	{nombre = p.nombre;edad = p.edad + 1};;
+
+type persona ={nombre: string; mutable edad: int};;
+thGol.edad <- 30;;
+
+let envejece p = p.edad <- p.edad + 1;;
+
+let mas_viejo p =
+	{p with edad = p.edad +1}
+
+type counter =
+	{turno: unit -> int; reset : unit -> unit};;
+
+let c1 =
+		let n = ref 0 in
+		{turno = (fun () -> n:= !n+1; !n); reset = fun() -> n:= 0};;
+
+let makeCounter () =
+			let n = ref 0 in
+			{turno = (fun () -> n:= !n+1; !n); reset = fun() -> n:= 0};;
+
+type 'a ref = {mutable contents: 'a ref};;
+let (!) v = v.contents;;
+let (:=) v x = v.contents <- x;;
+
+type personaplus =
+	{nombre: string; edad: int; pais: string};;
+
+let pepevox = {nombre: string, edad: 9; pais: "ESPANIA VUAMOOOOSSS"};;
+
+let edad p = p.edad;;
+
+let x,y = 2+1, 3*1;;
+
+let x = 1 and y = 2 and z = 3;; (*This makes x,y,z change at the same time*)
+
+let x,y =  y,x;;
+
+let rec par n = 
+    n = 0 || impar (n-1)
+and impar n =
+    n<>0 && par(n-1);;
+
+let c1 = object
+    val mutable n = 0
+    method turno = n <- n + 1; n
+    method reset = n <- 0
+end;;
+
+c1#turno;;
+
+c1#turno + (c1#reset; c1#turno);; (*Se evalua en cualquier orden, CUIDADO!*)
+
+let doble c = 2 * c#turno;;
+
+let doble_obj c = object
+    method turno = 2 * c#turno
+    method reset = c#reset
+end;;
+
+class counter = object
+    val mutable n = 0
+    method turno = n <- n + 1; n
+    method reset = n <- 0
+end;;
+
+let counter = <reset: unit; turno: int>;;
+
+let c3 = new counter;;
+
+let c4 = new counter;;
+
+class countWithSet = object
+    inherit counter
+    method setValue i = n <- i
+end;;

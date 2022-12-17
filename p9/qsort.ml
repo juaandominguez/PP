@@ -24,6 +24,10 @@ let crono f x =
   Sys.time () -. t;;
 
 
+let l = List.init 150_000 (function _ -> Random.int 10_000_000);;
+
+let t1 = crono (qsort1 (<=)) l;;
+let t2 = crono (qsort2 (<=)) l;;
 
 
 
