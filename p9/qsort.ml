@@ -18,16 +18,28 @@ número de elementos sin que se produzca un stack overflow*)
 
 let l1 = List.init 400000 (function _ -> Random.int 10000000);;
 
-let crono f x =
-  let t = Sys.time() in 
-  let _ = f x in
-  Sys.time () -. t;;
+(*Con qsort1 se produce un stack overflow mientras que qsort2 consigue ordenar la lista*)
 
+let crono f x=
+  let t=Sys.time() in
+  let _= f x in
+  Sys.time()-. t;;
 
-let l = List.init 150_000 (function _ -> Random.int 10_000_000);;
+let rec rep n f x=
+  if n=0 then ()
+  else (f x;rep (n-1) f x);;
+  
+let listas=
+List.map (function x->List.init x(function _-> Random.int 10_000_000))[75_000;100_000;150_000;200_000];;
 
-let t1 = crono (qsort1 (<=)) l;;
-let t2 = crono (qsort2 (<=)) l;;
+let t1=List.map(function l->crono (rep 5 (qsort1 (<=))) l) listas;;
 
+let t2=List.map(function l-> crono (rep 5 (qsort2 (<=)))l) listas;;
 
+List.map2 (fun x y -> (x/.y)) t1 t2;;
+
+(*Observando la diferencia de tiempos, hallamos que qsort1 es aproximadamente 
+un 10% más rápido que qsort2, lo cual es una ventaja para el primero.
+Esto se debe a que para qsort2 se usa una definicion de append recursiva terminal,
+la cual voltea la lista 2 veces, por lo tanto es menos eficiente.*)
 
