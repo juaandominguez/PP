@@ -53,4 +53,4 @@ let t2=List.map(function l-> crono (rep 5 (msort2 (<=)))l) listas;;
 
 List.map2 (fun x y -> (x/.y)) t1 t2;;
 
-(*Observamos que msort1 es unm 25% más rápido que msort2*)
+(*Observamos que msort1 es aproximadamente un 20% más rápido que msort2*)

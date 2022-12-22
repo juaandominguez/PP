@@ -14,7 +14,6 @@ let rec qsort2 ord =
 (*La ventaja de qsort2 respecto a qsort1 es que tiene una recursividad
 terminal lo cual permite realizar operaciones con listas con un mayor
 número de elementos sin que se produzca un stack overflow*)
-(*Podemos observar que para *)
 
 let l1 = List.init 400000 (function _ -> Random.int 10000000);;
 
