@@ -25,7 +25,7 @@ let rec map_tree f = function
 
 let size t = 
   let aux x l r = 
-    l + r + 1
+    1 + l + r
   in fold_tree aux 0 t;; 
 
 

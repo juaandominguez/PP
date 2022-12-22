@@ -8,14 +8,12 @@ let rec size = function
 | Gt (r, h::t) -> size h + size (Gt (r, t));;
 
 let rec height =
-  let rec list_max n = function
-	  [] -> n
-	| h::t -> let hh = height h in
-        if hh > n then list_max hh t
-		else list_max n t
-  in function
-	  Gt (_,[]) -> 1
-    | Gt (_,l) -> 1 + list_max 0 l;;
+  let rec aux n = function
+	| [] -> n
+	| h::t -> let hg = height h in if hg > n then aux hg t
+		else aux n t in function
+	  | Gt (_,[]) -> 1
+    | Gt (_,l) -> 1 + aux 0 l;;
 
 let rec leaves = function 
     Gt(r,[]) -> [r]

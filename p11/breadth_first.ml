@@ -10,8 +10,8 @@ let rec breadth_first_t t =
       match (curr,next) with
       | [],[] -> List.rev acc
       | [],next -> aux acc (List.rev next) []
-      | Gt(x,t2)::t1,next -> aux (x:acc) t1 (List.rev_append t2 next)
-    in aux [] [gt] [];;
+      | Gt(x,t2)::t1,next -> aux (x::acc) t1 (List.rev_append t2 next)
+    in aux [] [t] [];;
 
-let t = Gt(0,List.init 300_000 (fun x -> Gt(x+1,[])));;
+let t2 = Gt(0,List.init 300_000 (fun x -> Gt(x+1,[])));;
 
