@@ -12,7 +12,7 @@ let get_binding ctx name =
 
 let rec add_binding ctx name v = 
   match ctx with
-  []->[name,v]
-  |(name',v')::t-> if (name=name') then (name,v)::t
+  | []->[name,v]
+  | (name',v')::t-> if (name=name') then (name,v)::t
   else (name',v')::add_binding t name v;;
 
