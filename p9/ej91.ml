@@ -8,13 +8,12 @@ let fromto m n =
 		if m > n then i else aux(n::i) m (n-1)
 	in aux [] m n;;
 
-	(*TODO*)
-let incseg l =
-	let rec aux i l = match l with
-	  [] -> i
-	| h1::h2::t -> aux(h1+h2::i) t
-	| h1::t -> aux(h1::i) t
-in aux [] l;;
+let incseg l = 
+  let rec aux l acc l2 = match l with
+      [] -> []
+	| [h] -> List.rev ((h + acc)::l2)
+    | h::t -> aux t (h + acc) ((h + acc)::l2)
+  in aux l 0 [];;
 
 let remove x l = 
 let rec aux i x l = match l with 
