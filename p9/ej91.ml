@@ -20,7 +20,7 @@ let remove x l =
 	| [] -> l
 	| h::t -> if x = h then List.rev_append acc t
 	else aux (h::acc) t 
-  in aux [] l ;;
+  in aux [] l;;
 
 let rec compress l = 
 	let rec aux i l = match l with

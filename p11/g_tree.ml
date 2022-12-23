@@ -13,7 +13,7 @@ let rec height =
 	| h::t -> let hg = height h in if hg > n then aux hg t
 		else aux n t in function
 	| Gt (_,[]) -> 1
-    | Gt (_,l) -> 1 + aux 0 l;;
+    	| Gt (_,l) -> 1 + aux 0 l;;
 
 let rec leaves = function 
     | Gt(r,[]) -> [r]
