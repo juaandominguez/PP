@@ -12,20 +12,20 @@ type arith_bi_oper =
     Sum | Sub | Prod | Div | Mod | Pow;;
 
 let get_bi_op= function 
-    Sum -> (+.) 
+    | Sum -> (+.) 
     | Sub -> (-.)
     | Prod -> ( *.) 
     | Div -> (/.)  
-    |Mod -> (Float.rem) 
+    | Mod -> (Float.rem) 
     | Pow -> ( Float.pow);;
 
 
 type arith =
-    Float of float
-  | Var of string
-  | Arith_op of arith_oper * arith
-  | Arith_bi_op of arith_bi_oper * arith * arith
-  | Fun_call of string * arith;;
+    | Float of float
+    | Var of string
+    | Arith_op of arith_oper * arith
+    | Arith_bi_op of arith_bi_oper * arith * arith
+    | Fun_call of string * arith;;
 
 let rec eval ctx = function
     | Float f -> f
