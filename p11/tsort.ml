@@ -2,8 +2,8 @@
 open Bin_tree;;
 
 let rec insert_tree ord x = function
-	| Empty -> Node(x,Empty,Empty)
-	| Node (r,left,right) -> if ord x r then
+	| Empty -> Node(x, Empty, Empty)
+	| Node (r, left, right) -> if ord x r then
 	Node (r, insert_tree ord x left, right)
 	else Node (r, left, insert_tree ord x right) ;;
 
