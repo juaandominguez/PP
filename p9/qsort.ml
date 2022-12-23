@@ -3,7 +3,7 @@ let rec qsort1 ord = function
 | h::t -> let after, before = List.partition (ord h) t in
 qsort1 ord before @ h :: qsort1 ord after;;
 
-(*Qsort1 no será bueno en listas muy grandes debido a su recursividad no terminal,
+(*qsort1 no será bueno en listas muy grandes debido a su recursividad no terminal,
 lo que producirá un stack overflow*)
 
 let rec qsort2 ord =
