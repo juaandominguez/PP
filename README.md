@@ -1,5 +1,4 @@
-# PP
-Paradigmas de Programación
+# PP (Paradigmas de Programación)
 ------------------------------------------------------------------------------------------
 ## Notas Prácticas
 - **Práctica 1 : 10**
