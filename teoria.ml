@@ -407,41 +407,67 @@ let rec mirror (GT, (v,l)) =
 
 output_char;;
 - : out_channel -> char -> unit = <fun>
+
 stdout;;
 - : out_channel = <abstr>
+
 output_char stdout 'a';;
 a- : unit = ()
+
 let print_char c = output_char stdout c;;
 val print_char : char -> unit = <fun>
+
 let _ = print_char 'x' in print_char 'y';;
 xy- : unit = ()
+
 let totrue _ = true;;
 val totrue : 'a -> bool = <fun>
+
 totrue (print_char 'A' ) && totrue (print_char 'B');;
 AB- : bool = true
+
 "a" ^ "b"; 2 * 3;;
 let ignore _ = ();;
+
 String.get;; = str.[n];;
 - : string -> int -> char = <fun>
+
 let output_string c s = 
 	let n = String.length s in
 	let rec loop i =
 		if i>=n then ()
 		else begin output_char c s.[i]; loop (i+1) end
 	in loop 0;;
+val output_string : out_channel -> string -> unit = <fun>
 
 let print_string s = output_string stdout s;;
+val print_string : string -> unit = <fun>
+
 let print_endline s = 
 	print_string (s ^ "\n");
 	flush stdout;;
-
+val print_endline : string -> unit = <fun>
 stdout;; stderr;;
+- : out_channel = <abstr>
+
 open_out;;
+- : string -> out_channel = <fun>
+
 let sal = open_out "Prueba.md";;
+val sal : out_channel = <abstr>
+
 flush sal;;
+- : unit = ()
+
 close_out sal;;
+- : unit = ()
+
 input_char;;
+- : in_channel -> char = <fun>
+
 open_in;;
+- : string -> in_channel = <fun>
+
 let read_char () = input_char stdin;;
 read_line;; 
 
@@ -462,17 +488,27 @@ let rec iter f = function
 let output_string_list out l = iter (fun s -> output_string out (s ^ "\n")) l;;
 
 pos_in;;
+- : in_channel -> int = <fun>
+
 seek_in;;(*Cambia puntero a posicion indicada*)
+- : in_channel -> int -> unit = <fun>
+
 seek_out;;
+- : out_channel -> int -> unit = <fun>
 output_value;;
+- : out_channel -> 'a -> unit = <fun>
 ref;;
+- : 'a -> 'a ref = <fun>
 (!);;
+- : 'a ref -> 'a = <fun>
 let i = ref 0;;
+val i : int ref = {contents = 0}
 !i;;
 (:=);;
+- : 'a ref -> 'a -> unit = <fun>
 
 let fact n =
-	let p = ref 1 n
+	let p = ref 1 in
 	for i = 1 to n do 
 		p:= !p * i
 	done;
@@ -496,6 +532,7 @@ let n = ref 0;;
 let turno () =
 	 n := !n+1;
 	 !n;;
+	 val turno : unit -> int = <fun>
 
 let turno = 
 	let n = ref 0 in 
@@ -527,8 +564,10 @@ struct
 	let reset () = 
 	n:=0
 end;;
+SALIDA: module Counter : sig val turno : unit -> int val reset : unit -> unit end
 
 module C = Counter;;
+SALIDA: module C = Counter
 C.turno ();;
 
 module Counter (): 
@@ -544,22 +583,26 @@ struct
 	let reset () = 
 	n:=0
 end;;
+SALIDA: functor () -> sig val turno : unit -> int val reset : unit -> unit end
 
 module C1 = Counter ();;
+SALIDA : module C1 : sig val turno : unit -> int val reset : unit -> unit end
 
-Set
+Sets::
 
 module IntPair =
 struct
 		type t = int * int 
 		let compare = Stdlib.compare
 end;;
+SALIDA: module IntPair : sig type t = int * int val compare : 'a -> 'a -> int end
 
 module IPSet = Set.Make (IntPair);;
 
 let trees = List.init 50_000 (fun _ -> 1+Random.int(500),Random.int(500)+1);;
 
 let trees_Set = IPSet.of_list trees;;
+val trees_Set : IPSet.t = <abstr>
 
 let to_find = List.init 5_000 (fun _ -> 1+Random.int(500),Random.int(500)+1);;
 
@@ -572,18 +615,27 @@ let crono f x =
 		x; Sys.time () -. t;;
 
 let v = [|1;2;3|];;
+val v : int array = [|1; 2; 3|]
 
 Array.get v 0;;
+- : int = 1
 
 Array.set v 0 100;;
+- : unit = ()
 
 Sys.argv;;
+- : string array = [|"/usr/bin/utop"|]
 
 v.(0);; (*100*)
 
 Array.make 100 0;;
+- : int array =
+[|0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0;
+  0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0;
+  0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0;
+  0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0|]
 
-Array.init 100 (fun x -> x);;
+Array.init 100 (fun x -> x);; (*Como List.init*)
 
 let sProd v1 v2 = 
 	if Array.length v1 <> Array.length v2 then raise(Invalid_argument("sProd"))
@@ -599,13 +651,18 @@ let sProd v1 v2 =
 		Array.fold_left ( *. ) 0. (Array.map2 ( *. ) v1 v2);;
 
 type persona ={nombre: string; edad: int};;
+type persona = { nombre : string; edad : int; }
+
 let thGol = {nombre = "Thgol"; edad = 95};;
+val thGol : persona = {nombre = "Thgol"; edad = 95}
 
 let mas_viejo p =
 	{nombre = p.nombre;edad = p.edad + 1};;
+val mas_viejo : persona -> persona = <fun>
 
 type persona ={nombre: string; mutable edad: int};;
 thGol.edad <- 30;;
+- : unit = ()
 
 let envejece p = p.edad <- p.edad + 1;;
 
@@ -650,6 +707,7 @@ let c1 = object
     method turno = n <- n + 1; n
     method reset = n <- 0
 end;;
+val c1 : < reset : unit; turno : int > = <obj>
 
 c1#turno;;
 
@@ -667,10 +725,12 @@ class counter = object
     method turno = n <- n + 1; n
     method reset = n <- 0
 end;;
+object val mutable n : int method reset : unit method turno : int end
 
 let counter = <reset: unit; turno: int>;;
 
 let c3 = new counter;;
+val c3 : counter = <obj>
 
 let c4 = new counter;;
 
@@ -678,3 +738,10 @@ class countWithSet = object
     inherit counter
     method setValue i = n <- i
 end;;
+SALIDA: (class countWithSet :
+  object
+    val mutable n : int
+    method reset : unit
+    method setValue : int -> unit
+    method turno : int
+  end)
