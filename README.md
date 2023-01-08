@@ -9,7 +9,7 @@ Paradigmas de Programación
 - **Práctica 6 : 10**
 - **Práctica 7 : 10**
 - **Práctica 8 : 10**
-- **Práctica 9 : -**
-- **Práctica 10 : -**
-- **Práctica 11 : -**
-- **Práctica 12 : -**
+- **Práctica 9 : 10**
+- **Práctica 10 : 10**
+- **Práctica 11 : 10**
+- **Práctica 12 : 10**

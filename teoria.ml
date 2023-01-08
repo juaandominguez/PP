@@ -7,11 +7,11 @@ let x = 1 in 2 * 3;;
 let id = function x -> x;;
 let not_zero = function 0 -> false | _ -> true;;
 (*21/09/2022*)
-|> pipe
-match <e> with p1->e1 ...
+(* |> pipe *)
+(* match <e> with p1->e1 ...
 let f = function x->
 				 (function y ->x+y);;
-let x y = x+y;;
+let x y = x+y;; *)
 (*28/09/2022*)
 let max = function x,y -> if(x>=y) then x else y;;
 let min x = function y -> if x < y then x else y;;
@@ -45,7 +45,7 @@ let crono f x =
 	let _ = f x in 
 	Sys.time() -. t;;
 
-2+1; "hola" ^ "adios";;
+2+1; "hola" ^ "adios";; (*Should have type unit but ok*)
 
 let crono f x =
 	let t = Sys.time() in
@@ -59,18 +59,19 @@ let rec fib2 = function
 	| n -> let f1,f2 = fib2 (n-1) in
 		f1 + f2, f1;;
 
+(*LISTAS*)
 [1;2;3];;
 [1;100];;
-['a';'e';'i']
-let l = [1;2;3] (*int list*)
+['a';'e';'i'];;
+let l = [1;2;3];; (*int list*)
 List.length l ;;
-List.hd
-List.tl
-List.hd (List.tl (List.tl l))
-let rec length l =
+List.hd;;
+List.tl;;
+List.hd (List.tl (List.tl l));;
+(* let rec length l =
 	if l = [] then 0 else
 	1 + length (List.tl l);;
-	<a'>::<a' list>
+	<a'>::<a' list> *)
 
 let rec from_to i j =
 	if i<= j then i :: from_to (i+1) j
@@ -202,9 +203,9 @@ let rec insert x = function
 [] -> [x]
 | h::t -> if x<= h then x::h::t else h::insert x t;;
 
-let rec isort = (function
+let rec isort = function
 | [] -> [];
-| h::t -> insert h (isort t)
+| h::t -> insert h (isort t);;
 
 let insert' x l=
 let rec aux p1= function
@@ -213,10 +214,10 @@ let rec aux p1= function
 else aux (h::p1) t
 in aux [] l;;
 
-let isort' l =
+let isort' ord l =
 		let rec aux res = function
 		| [] -> res
-		| h::t -> aux(insert' h ord) t
+		| h::t -> aux (insert' h ord) t
 	in aux [] l;;
 
 let rec divide = function
@@ -226,12 +227,12 @@ let rec divide = function
 let rec merge = function
 | ([],l) | (l,[]) -> l
 | (h1::t1, h2::t2) ->  if h1<= h2 then h1 :: merge (t1, h2::t2)
-else h2 :: (merge h1::t1, t2);;
+else h2 :: (merge (h1::t1) t2);;
 
 let rec msort = (function
 | [] -> []
 | [x] -> [x]
-| l -> let l1,l2 = divide l in merge (msort l1, msort l2))
+| l -> let l1,l2 = divide l in merge (msort l1, msort l2));;
 
 	let threatens (i1,j1) (i2,j2) = 
 			i1 = i2 || 
@@ -405,15 +406,23 @@ let rec mirror (GT, (v,l)) =
 	GT(v,List.rev(List.map mirror l));;
 
 output_char;;
+- : out_channel -> char -> unit = <fun>
 stdout;;
+- : out_channel = <abstr>
 output_char stdout 'a';;
+a- : unit = ()
 let print_char c = output_char stdout c;;
+val print_char : char -> unit = <fun>
 let _ = print_char 'x' in print_char 'y';;
+xy- : unit = ()
 let totrue _ = true;;
+val totrue : 'a -> bool = <fun>
 totrue (print_char 'A' ) && totrue (print_char 'B');;
+AB- : bool = true
 "a" ^ "b"; 2 * 3;;
 let ignore _ = ();;
 String.get;; = str.[n];;
+- : string -> int -> char = <fun>
 let output_string c s = 
 	let n = String.length s in
 	let rec loop i =
