@@ -24,10 +24,6 @@ let simplify sol =
 let expand l = List.init (List.length l) (fun i -> (i+1, List.nth l i));;	
 (* definición obviamente mejorable *)
 *)
-
-let addRev l =
-	l @ List.rev l;;
-
   
 let all_queens n = 
     let rec search_all_from path (i,j) =
